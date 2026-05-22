@@ -475,8 +475,8 @@
         };
 
         // 3. Connect to Socket.IO real-time collaboration server
-        // Point connection to port 3000 where our Node.js socket server is listening
-        const socketUrl = `${window.location.protocol}//${window.location.hostname}:3000`;
+        // Try configured SOCKET_URL from environment first, fallback to port 3000 on current hostname
+        const socketUrl = '{{ env('SOCKET_URL') }}' || `${window.location.protocol}//${window.location.hostname}:3000`;
         const socket = window.io(socketUrl, {
             timeout: 5000,
             reconnectionAttempts: 5
