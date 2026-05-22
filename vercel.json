@@ -1,7 +1,8 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "bash build.sh",
+  "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm install",
+  "buildCommand": "npm run build",
   "outputDirectory": "public",
   "functions": {
     "api/index.php": {
