@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build && cp -r public/build public/dist || true",
+        "build": "vite build",
         "dev": "concurrently \"vite\" \"node socket-server.js\" --names=\"vite,socket\" -c \"cyan,magenta\"",
         "socket": "node socket-server.js",
         "vercel-build": "vite build",
