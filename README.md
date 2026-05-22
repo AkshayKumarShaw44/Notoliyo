@@ -649,3 +649,568 @@ Edit `resources/css/app.css`:
 
 ---
 
+
+## 🚀 **Deployment Guide**
+
+### 📋 **Production Checklist**
+
+- [ ] Set `APP_ENV=production` in `.env`
+- [ ] Set `APP_DEBUG=false` in `.env`
+- [ ] Configure production MongoDB connection
+- [ ] Run `composer install --optimize-autoloader --no-dev`
+- [ ] Run `npm run build`
+- [ ] Set up SSL certificate (HTTPS)
+- [ ] Configure CORS for Socket.IO
+- [ ] Set up PM2 for Socket.IO server
+- [ ] Configure web server (Nginx/Apache)
+- [ ] Set up monitoring and logging
+- [ ] Configure backup strategy
+
+### 🔌 **Deploy Socket.IO Server with PM2**
+
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Start Socket.IO server
+pm2 start socket-server.js --name notoliyo-socket
+
+# Save PM2 configuration
+pm2 save
+
+# Set PM2 to start on boot
+pm2 startup
+
+# Monitor logs
+pm2 logs notoliyo-socket
+
+# Restart server
+pm2 restart notoliyo-socket
+```
+
+### 🌐 **Nginx Configuration Example**
+
+```nginx
+server {
+    listen 80;
+    server_name notoliyo.com;
+    root /var/www/notoliyo/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+
+# Socket.IO Proxy
+server {
+    listen 80;
+    server_name socket.notoliyo.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+---
+
+## 📚 **API Documentation**
+
+### 🔐 **Authentication Endpoints**
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/login` | Show login form | ❌ |
+| `POST` | `/login` | Authenticate user | ❌ |
+| `GET` | `/register` | Show registration form | ❌ |
+| `POST` | `/register` | Register new user | ❌ |
+| `POST` | `/logout` | Logout user | ✅ |
+
+### 📝 **Note Endpoints**
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/dashboard` | Show dashboard | ✅ |
+| `POST` | `/notes` | Create new note | ✅ |
+| `GET` | `/notes/{id}` | Show note editor | ✅ |
+| `POST` | `/notes/{id}/update` | Update note | ✅ |
+| `DELETE` | `/notes/{id}` | Delete note | ✅ |
+| `POST` | `/notes/{id}/toggle-favorite` | Toggle favorite | ✅ |
+| `POST` | `/notes/{id}/toggle-pin` | Toggle pin status | ✅ |
+| `POST` | `/notes/{id}/share` | Toggle public sharing | ✅ |
+
+### 🤝 **Collaboration Endpoints**
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/notes/{id}/collaborators` | Invite collaborator | ✅ |
+| `POST` | `/notes/{id}/collaborators/remove` | Remove collaborator | ✅ |
+
+### 💬 **Comment Endpoints**
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/notes/{id}/comments` | Add comment | ✅ |
+
+### 👤 **Profile Endpoints**
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/profile` | Show profile page | ✅ |
+| `POST` | `/profile` | Update profile | ✅ |
+
+### 🔔 **Notification Endpoints**
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/notifications` | Get all notifications | ✅ |
+| `POST` | `/notifications/{id}/read` | Mark as read | ✅ |
+| `POST` | `/notifications/read-all` | Mark all as read | ✅ |
+
+---
+
+## 🎓 **Usage Guide**
+
+### 📝 **Creating Your First Note**
+
+1. **Register/Login** to your account
+2. Click **"Create Note"** button in dashboard
+3. Enter a **title** and optional **category**
+4. Start writing in the **rich text editor**
+5. Your work is **auto-saved** every 2 seconds
+
+### 🤝 **Collaborating in Real-Time**
+
+1. Open a note you own
+2. Click the **"Share"** button
+3. Choose sharing method:
+   - **Enable Public Link** - Anyone with link can edit
+   - **Invite by Email** - Add specific collaborators with roles
+4. Share the link with your team
+5. Watch as everyone edits together in **real-time**!
+
+### ⌨️ **Keyboard Shortcuts**
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + B` | **Bold** text |
+| `Ctrl/Cmd + I` | *Italic* text |
+| `Ctrl/Cmd + Shift + X` | ~~Strikethrough~~ |
+| `Ctrl/Cmd + Shift + 7` | Ordered list |
+| `Ctrl/Cmd + Shift + 8` | Bullet list |
+| `Ctrl/Cmd + Shift + 9` | Blockquote |
+| `Ctrl/Cmd + Alt + 1` | Heading 1 |
+| `Ctrl/Cmd + Alt + 2` | Heading 2 |
+| `Ctrl/Cmd + Alt + 3` | Heading 3 |
+
+### 🗂️ **Organizing Notes**
+
+- Use **categories/folders** to organize notes
+- **Star** important notes for quick access
+- **Pin** critical notes to dashboard top
+- Add **tags** for better categorization
+- Use **search** to find notes instantly
+- Filter by ownership and sharing status
+
+---
+
+## 🐛 **Troubleshooting**
+
+### ❌ **Common Issues**
+
+<details>
+<summary><b>Socket.IO Connection Failed</b></summary>
+
+**Problem:** Real-time features not working
+
+**Solution:**
+```bash
+# Check if Socket.IO server is running
+pm2 status
+
+# Restart Socket.IO server
+pm2 restart notoliyo-socket
+
+# Check logs
+pm2 logs notoliyo-socket
+```
+</details>
+
+<details>
+<summary><b>Vite Manifest Error</b></summary>
+
+**Problem:** "Unable to locate file in Vite manifest"
+
+**Solution:**
+```bash
+# Rebuild assets
+npm run build
+
+# Or start dev server
+npm run dev
+```
+</details>
+
+<details>
+<summary><b>MongoDB Connection Error</b></summary>
+
+**Problem:** Cannot connect to MongoDB
+
+**Solution:**
+- Check MongoDB URI in `.env`
+- Verify MongoDB Atlas IP whitelist
+- Ensure database user has correct permissions
+- Test connection with MongoDB Compass
+</details>
+
+<details>
+<summary><b>Permission Denied Errors</b></summary>
+
+**Problem:** Storage or cache permission errors
+
+**Solution:**
+```bash
+# Fix storage permissions
+chmod -R 775 storage bootstrap/cache
+
+# Clear cache
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+```
+</details>
+
+---
+
+
+## 🤝 **Contributing**
+
+We welcome contributions from the community! Here's how you can help:
+
+### 🌟 **Ways to Contribute**
+
+- 🐛 Report bugs and issues
+- 💡 Suggest new features
+- 📝 Improve documentation
+- 🔧 Submit pull requests
+- ⭐ Star the repository
+- 📢 Share with others
+
+### 📝 **Contribution Guidelines**
+
+1. **Fork** the repository
+2. **Create** a feature branch
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Commit** your changes
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. **Push** to the branch
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. **Open** a Pull Request
+
+### 📋 **Code Style**
+
+- Follow **PSR-12** coding standards for PHP
+- Use **Laravel Pint** for code formatting
+- Write **meaningful commit messages**
+- Add **tests** for new features
+- Update **documentation** as needed
+
+```bash
+# Format code with Pint
+./vendor/bin/pint
+
+# Run tests before committing
+php artisan test
+```
+
+---
+
+## 📄 **License**
+
+This project is licensed under the **MIT License**.
+
+```
+MIT License
+
+Copyright (c) 2026 Akshay Kumar Shaw
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 👨‍💻 **Author**
+
+<div align="center">
+
+### **Akshay Kumar Shaw**
+
+<img src="https://img.icons8.com/fluency/96/000000/user-male-circle.png" width="100"/>
+
+*Full Stack Developer | Laravel Enthusiast | Open Source Contributor*
+
+---
+
+### 🌐 **Connect With Me**
+
+<p align="center">
+  <a href="https://github.com/AkshayKumarShaw44">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+  </a>
+  <a href="https://x.com/Akshaykrshaw">
+    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"/>
+  </a>
+  <a href="https://www.linkedin.com/in/akshaykumarshaw44">
+    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
+  </a>
+  <a href="https://www.instagram.com/akshay_kr_shaw/">
+    <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"/>
+  </a>
+  <a href="mailto:akshaykumarshaw44@gmail.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/>
+  </a>
+</p>
+
+---
+
+### 📊 **GitHub Stats**
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=AkshayKumarShaw44&show_icons=true&theme=radical" alt="GitHub Stats" />
+</p>
+
+<p align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=AkshayKumarShaw44&theme=radical" alt="GitHub Streak" />
+</p>
+
+---
+
+### 💼 **Portfolio**
+
+```
+📧 Email: akshaykumarshaw44@gmail.com
+🌐 GitHub: github.com/AkshayKumarShaw44
+🐦 Twitter: @Akshaykrshaw
+💼 LinkedIn: linkedin.com/in/akshaykumarshaw44
+📸 Instagram: @akshay_kr_shaw
+```
+
+</div>
+
+---
+
+## 🙏 **Acknowledgments**
+
+Special thanks to these amazing projects and communities:
+
+<table>
+<tr>
+<td align="center" width="20%">
+<img src="https://laravel.com/img/logomark.min.svg" width="48"/><br/>
+<b>Laravel</b><br/>
+<sub>PHP Framework</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://www.mongodb.com/assets/images/global/favicon.ico" width="48"/><br/>
+<b>MongoDB</b><br/>
+<sub>NoSQL Database</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://tailwindcss.com/favicons/favicon-32x32.png" width="48"/><br/>
+<b>Tailwind CSS</b><br/>
+<sub>CSS Framework</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://alpinejs.dev/alpine_long.svg" width="48"/><br/>
+<b>Alpine.js</b><br/>
+<sub>JS Framework</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://tiptap.dev/favicon.ico" width="48"/><br/>
+<b>TipTap</b><br/>
+<sub>Rich Text Editor</sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="20%">
+<img src="https://socket.io/images/favicon.png" width="48"/><br/>
+<b>Socket.IO</b><br/>
+<sub>Real-time Engine</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://vitejs.dev/logo.svg" width="48"/><br/>
+<b>Vite</b><br/>
+<sub>Build Tool</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://fontawesome.com/favicon.ico" width="48"/><br/>
+<b>Font Awesome</b><br/>
+<sub>Icon Library</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://michalsnik.github.io/aos/img/favicon.ico" width="48"/><br/>
+<b>AOS</b><br/>
+<sub>Scroll Animations</sub>
+</td>
+<td align="center" width="20%">
+<img src="https://pestphp.com/www/favicon.ico" width="48"/><br/>
+<b>Pest PHP</b><br/>
+<sub>Testing Framework</sub>
+</td>
+</tr>
+</table>
+
+---
+
+## 🎯 **Roadmap**
+
+### 🚀 **Upcoming Features**
+
+- [ ] 📱 **Mobile Apps** - iOS and Android native apps
+- [ ] 📄 **Export Options** - PDF, Markdown, DOCX export
+- [ ] 📋 **Note Templates** - Pre-built templates for common use cases
+- [ ] 🕐 **Version History** - Track changes and restore previous versions
+- [ ] 🔒 **End-to-End Encryption** - Secure your sensitive notes
+- [ ] 📎 **File Attachments** - Attach images, PDFs, and other files
+- [ ] 🎤 **Voice Notes** - Record and transcribe voice notes
+- [ ] 🤖 **AI Suggestions** - Smart writing suggestions and auto-complete
+- [ ] 🌐 **Offline Mode** - Work offline with automatic sync
+- [ ] 📊 **Advanced Analytics** - Detailed productivity insights
+- [ ] 🎨 **Custom Themes** - Create and share custom themes
+- [ ] 🔗 **API Access** - RESTful API for third-party integrations
+- [ ] 🌍 **Internationalization** - Multi-language support
+- [ ] 📧 **Email Notifications** - Get notified via email
+- [ ] 🔍 **Advanced Search** - Full-text search with filters
+
+---
+
+## 💡 **Tips for Presentation**
+
+### 🎤 **Key Points to Highlight**
+
+1. **Real-Time Collaboration** 🤝
+   - Show multiple browsers editing simultaneously
+   - Demonstrate cursor tracking and typing indicators
+   - Highlight instant synchronization
+
+2. **Modern UI/UX** 🎨
+   - Showcase glassmorphism design
+   - Demonstrate smooth animations
+   - Show responsive design on different devices
+
+3. **Clean Architecture** 🏗️
+   - Explain MVC pattern
+   - Discuss service layer for business logic
+   - Show separation of concerns
+
+4. **MongoDB Integration** 🗄️
+   - Discuss NoSQL benefits for this use case
+   - Show flexible schema design
+   - Explain scalability advantages
+
+5. **Socket.IO Technology** ⚡
+   - Explain WebSocket vs HTTP polling
+   - Show room-based architecture
+   - Demonstrate real-time event broadcasting
+
+### 🎬 **Demo Flow**
+
+1. **Landing Page** - Show features and design
+2. **Registration** - Create a new account
+3. **Dashboard** - Explore analytics and organization
+4. **Create Note** - Demonstrate rich text editing
+5. **Collaboration** - Share note and show real-time editing
+6. **Comments** - Add and view comments
+7. **Notifications** - Show real-time notifications
+8. **Organization** - Demonstrate tags, pins, and categories
+9. **Search** - Find notes quickly
+10. **Profile** - Show user settings
+
+---
+
+## 📞 **Support**
+
+### 🆘 **Need Help?**
+
+- 📧 **Email:** akshaykumarshaw44@gmail.com
+- 🐛 **Issues:** [GitHub Issues](https://github.com/AkshayKumarShaw44/Notoliyo/issues)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/AkshayKumarShaw44/Notoliyo/discussions)
+- 📖 **Documentation:** [Wiki](https://github.com/AkshayKumarShaw44/Notoliyo/wiki)
+
+---
+
+## ⭐ **Show Your Support**
+
+If you found this project helpful, please consider:
+
+- ⭐ **Starring** the repository
+- 🍴 **Forking** for your own projects
+- 📢 **Sharing** with others
+- 💖 **Sponsoring** the development
+
+<div align="center">
+
+### **Made with ❤️ by [Akshay Kumar Shaw](https://github.com/AkshayKumarShaw44)**
+
+---
+
+<img src="https://img.shields.io/github/stars/AkshayKumarShaw44/Notoliyo?style=social" alt="Stars"/>
+<img src="https://img.shields.io/github/forks/AkshayKumarShaw44/Notoliyo?style=social" alt="Forks"/>
+<img src="https://img.shields.io/github/watchers/AkshayKumarShaw44/Notoliyo?style=social" alt="Watchers"/>
+
+---
+
+### **⭐ Star this repository if you find it helpful! ⭐**
+
+<sub>Built with passion for the developer community 🚀</sub>
+
+</div>
