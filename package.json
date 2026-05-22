@@ -3,10 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build && cp -r public/build public/dist || true",
         "dev": "concurrently \"vite\" \"node socket-server.js\" --names=\"vite,socket\" -c \"cyan,magenta\"",
         "socket": "node socket-server.js",
-        "vercel-build": "composer install --no-dev --optimize-autoloader --no-interaction && npm install && vite build",
+        "vercel-build": "vite build",
         "deploy": "npm run build && git add . && git commit -m 'Deploy to Vercel' && git push"
     },
     "devDependencies": {
