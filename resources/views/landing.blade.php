@@ -7,12 +7,29 @@
     <!-- Navigation -->
     <header class="sticky top-0 z-40 w-full frosted border-b border-slate-200/50 dark:border-slate-800/50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-bold text-xl">
-                    N
+            <a href="{{ route('landing') }}" class="flex items-center gap-3 group">
+                <!-- Animated Icon -->
+                <div class="relative w-10 h-10">
+                    <!-- Rotating Gradient Background -->
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 animate-spin-slow"></div>
+                    <!-- Icon Container -->
+                    <div class="absolute inset-0.5 rounded-xl bg-slate-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Animated Note Icon -->
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" class="fill-indigo-400 animate-pulse-slow"/>
+                            <path d="M14 2V8H20" class="stroke-purple-400 animate-pulse-slow" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 13H16M8 17H16" class="stroke-pink-400" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <!-- Glow Effect -->
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 blur-md opacity-40 animate-pulse-slow group-hover:opacity-60 transition-opacity"></div>
                 </div>
-                <span class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500 font-display">Notoliyo</span>
-            </div>
+                
+                <!-- Animated Text -->
+                <span class="text-xl font-black tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-x bg-300% group-hover:scale-105 transition-transform">
+                    Notoliyo
+                </span>
+            </a>
             
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
                 <a href="#features" class="text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-400 transition-colors">Features</a>
@@ -186,39 +203,39 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
-                <div class="p-6 rounded-2xl glass-card shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                <div class="p-6 rounded-2xl glass-card shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group"
                      data-aos="fade-up"
                      data-aos-delay="100">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-6 text-xl">
-                        <i class="fa-solid fa-arrows-rotate animate-spin-slow"></i>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-6 text-xl group-hover:bg-indigo-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-arrows-rotate"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Real-time Collaboration</h3>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Real-time Collaboration</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         Simultaneously edit notes, see typing indicators, and track other users' cursors live over websockets.
                     </p>
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="p-6 rounded-2xl glass-card shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                <div class="p-6 rounded-2xl glass-card shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group"
                      data-aos="fade-up"
                      data-aos-delay="200">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-6 text-xl">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-6 text-xl group-hover:bg-purple-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                         <i class="fa-solid fa-cubes"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">TipTap Rich Text</h3>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">TipTap Rich Text</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         A distraction-free rich text editor supporting headings, lists, bold, italics, code blocks, and blockquotes.
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="p-6 rounded-2xl glass-card shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                <div class="p-6 rounded-2xl glass-card shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group"
                      data-aos="fade-up"
                      data-aos-delay="300">
-                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center mb-6 text-xl">
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center mb-6 text-xl group-hover:bg-pink-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                         <i class="fa-solid fa-link"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Instant Public Sharing</h3>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">Instant Public Sharing</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                         Toggle sharing to generate a public invite link. Guest readers or writers can collaborate without registration.
                     </p>
@@ -234,11 +251,28 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <!-- Brand Section -->
                 <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg text-white font-bold text-xl">
-                            N
+                    <div class="flex items-center gap-3 mb-4 group cursor-pointer">
+                        <!-- Animated Icon -->
+                        <div class="relative w-10 h-10">
+                            <!-- Rotating Gradient Background -->
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 animate-spin-slow"></div>
+                            <!-- Icon Container -->
+                            <div class="absolute inset-0.5 rounded-xl bg-slate-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Animated Note Icon -->
+                                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" class="fill-indigo-400 animate-pulse-slow"/>
+                                    <path d="M14 2V8H20" class="stroke-purple-400 animate-pulse-slow" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 13H16M8 17H16" class="stroke-pink-400" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <!-- Glow Effect -->
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 blur-md opacity-40 animate-pulse-slow group-hover:opacity-60 transition-opacity"></div>
                         </div>
-                        <span class="text-xl font-bold text-slate-900 dark:text-white">Notoliyo</span>
+                        
+                        <!-- Animated Text -->
+                        <span class="text-xl font-black bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                            Notoliyo
+                        </span>
                     </div>
                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                         A beautifully fast collaborative notepad built for students and developers. Real-time collaboration made simple.
