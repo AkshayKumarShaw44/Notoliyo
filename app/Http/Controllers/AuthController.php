@@ -127,7 +127,19 @@ class AuthController extends Controller
             ->limit(10)
             ->get();
 
-        return view('profile', compact('user', 'activities'));
+        // Get user statistics
+        $userNoteIds = \App\Models\Note::where('user_id', $user->id)->pluck('_id')->toArray();
+        
+        $stats = [
+            'total_notes' => \App\Models\Note::where('user_id', $user->id)->count(),
+            'shared_notes' => \App\Models\Collaboration::where('user_id', $user->id)->count(),
+            'total_collaborators' => \App\Models\Collaboration::whereIn('note_id', $userNoteIds)
+                ->pluck('user_id')
+                ->unique()
+                ->count(),
+        ];
+
+        return view('profile', compact('user', 'activities', 'stats'));
     }
 
     /**
@@ -161,5 +173,40 @@ class AuthController extends Controller
         ]);
 
         return back()->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Delete user account permanently.
+     */
+    public function deleteAccount(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'confirmation' => 'required|in:DELETE'
+        ], [
+            'confirmation.in' => 'You must type DELETE to confirm account deletion.'
+        ]);
+
+        $user = Auth::user();
+
+        // Delete user's notes
+        \App\Models\Note::where('user_id', $user->id)->delete();
+
+        // Delete collaborations
+        \App\Models\Collaboration::where('user_id', $user->id)->delete();
+
+        // Delete activities
+        Activity::where('user_id', $user->id)->delete();
+
+        // Delete comments
+        \App\Models\Comment::where('user_id', $user->id)->delete();
+
+        // Logout and delete user
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        $user->delete();
+
+        return redirect()->route('landing')->with('success', 'Your account has been permanently deleted.');
     }
 }

@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     // Profile & Settings
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+    Route::delete('/profile/delete', [AuthController::class, 'deleteAccount'])->name('profile.delete');
 
     // Note actions requiring auth (creation, deletion, favoriting, sharing)
     Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
