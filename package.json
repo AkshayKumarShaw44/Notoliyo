@@ -6,7 +6,7 @@
         "build": "vite build",
         "dev": "concurrently \"vite\" \"node socket-server.js\" --names=\"vite,socket\" -c \"cyan,magenta\"",
         "socket": "node socket-server.js",
-        "vercel-build": "npm run build",
+        "vercel-build": "composer install --no-dev --optimize-autoloader --no-interaction && npm install && vite build",
         "deploy": "npm run build && git add . && git commit -m 'Deploy to Vercel' && git push"
     },
     "devDependencies": {
