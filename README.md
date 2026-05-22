@@ -1,8 +1,116 @@
 <div align="center">
 
-# 📝✨ Notoliyo
+<!-- Animated Logo -->
+<svg width="600" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient Definitions -->
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1">
+        <animate attributeName="stop-color" values="#667eea;#764ba2;#f093fb;#4facfe;#667eea" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1">
+        <animate attributeName="stop-color" values="#764ba2;#f093fb;#4facfe;#667eea;#764ba2" dur="8s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1">
+        <animate attributeName="stop-color" values="#667eea;#f093fb;#4facfe;#00f2fe;#667eea" dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1">
+        <animate attributeName="stop-color" values="#764ba2;#4facfe;#00f2fe;#667eea;#764ba2" dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1">
+        <animate attributeName="stop-color" values="#f093fb;#00f2fe;#667eea;#764ba2;#f093fb" dur="6s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    
+    <!-- Glow Filter -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Animated Background -->
+  <rect width="600" height="200" fill="url(#grad1)" rx="20">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="4s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- Decorative Elements -->
+  <circle cx="50" cy="50" r="30" fill="rgba(255,255,255,0.1)">
+    <animate attributeName="cy" values="50;150;50" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.1;0.3;0.1" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="550" cy="150" r="40" fill="rgba(255,255,255,0.1)">
+    <animate attributeName="cy" values="150;50;150" dur="10s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.1;0.3;0.1" dur="10s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Icon - Note with Pen -->
+  <g transform="translate(80, 60)">
+    <!-- Note Paper -->
+    <rect x="0" y="0" width="60" height="80" rx="5" fill="white" opacity="0.95" filter="url(#glow)">
+      <animate attributeName="y" values="0;-5;0" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Lines on Paper -->
+    <line x1="10" y1="20" x2="50" y2="20" stroke="#667eea" stroke-width="2" opacity="0.6"/>
+    <line x1="10" y1="35" x2="50" y2="35" stroke="#764ba2" stroke-width="2" opacity="0.6"/>
+    <line x1="10" y1="50" x2="40" y2="50" stroke="#f093fb" stroke-width="2" opacity="0.6"/>
+    
+    <!-- Pen -->
+    <g transform="translate(45, 55) rotate(-45)">
+      <rect x="0" y="0" width="8" height="35" rx="2" fill="#4facfe">
+        <animate attributeName="fill" values="#4facfe;#00f2fe;#667eea;#4facfe" dur="4s" repeatCount="indefinite"/>
+      </rect>
+      <polygon points="0,35 8,35 4,42" fill="#2d3748"/>
+    </g>
+  </g>
+  
+  <!-- Main Title with Animation -->
+  <text x="300" y="100" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="url(#textGrad)" filter="url(#glow)">
+    Notoliyo
+    <animate attributeName="opacity" values="1;0.8;1" dur="3s" repeatCount="indefinite"/>
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="300" y="140" font-family="Arial, sans-serif" font-size="20" font-style="italic" text-anchor="middle" fill="white" opacity="0.9">
+    Where Ideas Come to Life in Real-Time
+    <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" repeatCount="indefinite"/>
+  </text>
+  
+  <!-- Sparkle Effects -->
+  <circle cx="200" cy="70" r="3" fill="white">
+    <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="420" cy="90" r="3" fill="white">
+    <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+    <animate attributeName="r" values="2;4;2" dur="2.5s" repeatCount="indefinite" begin="0.5s"/>
+  </circle>
+  
+  <circle cx="480" cy="120" r="3" fill="white">
+    <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+    <animate attributeName="r" values="2;4;2" dur="3s" repeatCount="indefinite" begin="1s"/>
+  </circle>
+  
+  <!-- Floating Particles -->
+  <circle cx="150" cy="160" r="2" fill="rgba(255,255,255,0.6)">
+    <animate attributeName="cy" values="160;140;160" dur="5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="450" cy="160" r="2" fill="rgba(255,255,255,0.6)">
+    <animate attributeName="cy" values="160;140;160" dur="6s" repeatCount="indefinite"/>
+  </circle>
+</svg>
 
-### *Where Ideas Come to Life in Real-Time*
+<br/>
 
 <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" alt="Status">
 <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" alt="Version">
