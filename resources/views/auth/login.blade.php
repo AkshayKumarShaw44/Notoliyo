@@ -10,11 +10,28 @@
 
     <div class="w-full max-w-md relative z-10">
         <div class="text-center mb-8">
-            <a href="{{ route('landing') }}" class="inline-flex items-center gap-3 mb-4 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-105 transition-all">
-                    N
+            <a href="{{ route('landing') }}" class="inline-flex items-center gap-3 mb-6 group">
+                <!-- Animated Icon -->
+                <div class="relative w-14 h-14">
+                    <!-- Rotating Gradient Background -->
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 animate-spin-slow"></div>
+                    <!-- Icon Container -->
+                    <div class="absolute inset-0.5 rounded-xl bg-slate-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Animated Note Icon -->
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" class="fill-indigo-400 animate-pulse-slow"/>
+                            <path d="M14 2V8H20" class="stroke-purple-400 animate-pulse-slow" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 13H16M8 17H16" class="stroke-pink-400" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <!-- Glow Effect -->
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 blur-lg opacity-50 animate-pulse-slow group-hover:opacity-75 transition-opacity"></div>
                 </div>
-                <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500">Notoliyo</span>
+                
+                <!-- Animated Text -->
+                <span class="text-3xl font-black tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-x bg-300% group-hover:scale-105 transition-transform">
+                    Notoliyo
+                </span>
             </a>
             <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Welcome back</h2>
             <p class="mt-2 text-sm text-slate-500">Simplify your collaborative brainstorming</p>

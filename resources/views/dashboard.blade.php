@@ -10,15 +10,41 @@
 
     <!-- Sidebar Layout -->
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'" class="fixed inset-y-0 left-0 z-40 w-64 glass-strong border-r border-slate-200/50 dark:border-slate-800/50 flex flex-col transition-transform duration-300 ease-in-out md:static md:h-full shadow-xl">
-        <!-- Sidebar Header / Logo -->
-        <div class="h-16 px-6 border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                    N
+        <!-- Sidebar Header / Logo with Animation -->
+        <div class="h-24 px-4 border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between relative overflow-hidden">
+            <!-- Animated Background Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 animate-gradient-x"></div>
+            
+            <div class="flex items-center gap-3 relative z-10">
+                <!-- Animated Icon -->
+                <div class="relative w-12 h-12">
+                    <!-- Rotating Gradient Background -->
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 animate-spin-slow"></div>
+                    <!-- Icon Container -->
+                    <div class="absolute inset-0.5 rounded-xl bg-slate-900 flex items-center justify-center">
+                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Animated Note Icon -->
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" class="fill-indigo-400 animate-pulse-slow"/>
+                            <path d="M14 2V8H20" class="stroke-purple-400 animate-pulse-slow" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 13H16M8 17H16" class="stroke-pink-400" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <!-- Glow Effect -->
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 blur-md opacity-50 animate-pulse-slow"></div>
                 </div>
-                <span class="font-bold text-lg text-slate-900 dark:text-white">Notoliyo</span>
+                
+                <!-- Animated Text -->
+                <div class="flex flex-col">
+                    <span class="font-black text-2xl tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-x bg-300% leading-none">
+                        Notoliyo
+                    </span>
+                    <span class="text-[9px] font-bold text-slate-400 tracking-widest uppercase mt-1">
+                        Premium Notes
+                    </span>
+                </div>
             </div>
-            <button @click="sidebarOpen = false" class="md:hidden text-slate-400 hover:text-slate-600">
+            
+            <button @click="sidebarOpen = false" class="md:hidden text-slate-400 hover:text-slate-600 relative z-10 transition-colors">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -63,21 +89,25 @@
         <!-- Sidebar Footer / Profile Info -->
         <div class="p-4 border-t border-slate-200/50 dark:border-slate-800/50 flex flex-col gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md" style="background-color: {{ Auth::user()->avatar_color }}">
-                    {{ Auth::user()->name[0] }}
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md relative overflow-hidden group cursor-pointer" style="background-color: {{ Auth::user()->avatar_color }}">
+                    <!-- Animated gradient overlay on hover -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-indigo-500/30 group-hover:via-purple-500/30 group-hover:to-pink-500/30 transition-all duration-500"></div>
+                    <span class="relative z-10 group-hover:scale-110 transition-transform">{{ Auth::user()->name[0] }}</span>
                 </div>
                 <div class="flex-grow min-w-0">
-                    <h4 class="text-sm font-bold truncate text-slate-900 dark:text-white">{{ Auth::user()->name }}</h4>
+                    <h4 class="text-sm font-bold truncate bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-x bg-300%">
+                        {{ Auth::user()->name }}
+                    </h4>
                     <p class="text-xs text-slate-400 truncate">{{ Auth::user()->email }}</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ route('profile') }}" class="flex-grow h-9 rounded-xl border border-slate-200/60 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/80 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <a href="{{ route('profile') }}" class="flex-grow h-9 rounded-xl border border-slate-200/60 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/80 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-slate-300 transition-all hover:scale-105">
                     <i class="fa-solid fa-gear mr-2 text-xs"></i> Settings
                 </a>
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" class="w-9 h-9 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-slate-500 hover:bg-rose-500/10 hover:text-rose-500 hover:border-rose-500/30 flex items-center justify-center cursor-pointer">
+                    <button type="submit" class="w-9 h-9 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-slate-500 hover:bg-rose-500/10 hover:text-rose-500 hover:border-rose-500/30 flex items-center justify-center cursor-pointer transition-all hover:scale-110 hover:rotate-6">
                         <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
                     </button>
                 </form>
@@ -225,72 +255,78 @@
         <div class="flex-grow overflow-y-auto p-6 space-y-8 relative z-0">
             <!-- Greeting & Quick Stats -->
             <div>
-                <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">Hello, {{ Auth::user()->name }}</h1>
+                <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">
+                    Hello, 
+                    <span class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x bg-300% inline-block">
+                        {{ Auth::user()->name }}
+                    </span>
+                    <span class="inline-block animate-wave">👋</span>
+                </h1>
                 <p class="text-sm text-slate-500 mt-1">Here is a quick overview of your notebooks.</p>
             </div>
 
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Total Notes -->
-                <div class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="glass-card rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Notes</p>
-                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ $stats['total_notes'] }}</h3>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-indigo-400 transition-colors">Total Notes</p>
+                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 group-hover:scale-110 transition-transform">{{ $stats['total_notes'] }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:bg-indigo-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                             <i class="fa-solid fa-file-lines text-xl"></i>
                         </div>
                     </div>
-                    <p class="text-xs text-emerald-500 font-semibold mt-3">
+                    <p class="text-xs text-emerald-500 font-semibold mt-3 group-hover:translate-x-1 transition-transform">
                         <i class="fa-solid fa-arrow-up"></i> {{ $stats['notes_this_week'] }} this week
                     </p>
                 </div>
 
                 <!-- Shared Notes -->
-                <div class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="glass-card rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Shared Notes</p>
-                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ $stats['shared_notes'] }}</h3>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-purple-400 transition-colors">Shared Notes</p>
+                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 group-hover:scale-110 transition-transform">{{ $stats['shared_notes'] }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                             <i class="fa-solid fa-users text-xl"></i>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-400 font-semibold mt-3">
+                    <p class="text-xs text-slate-400 font-semibold mt-3 group-hover:translate-x-1 transition-transform">
                         Collaborative documents
                     </p>
                 </div>
 
                 <!-- Collaborators -->
-                <div class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="glass-card rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Collaborators</p>
-                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ $stats['total_collaborators'] }}</h3>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-pink-400 transition-colors">Collaborators</p>
+                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 group-hover:scale-110 transition-transform">{{ $stats['total_collaborators'] }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                             <i class="fa-solid fa-user-group text-xl"></i>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-400 font-semibold mt-3">
+                    <p class="text-xs text-slate-400 font-semibold mt-3 group-hover:translate-x-1 transition-transform">
                         Active team members
                     </p>
                 </div>
 
                 <!-- Categories -->
-                <div class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="glass-card rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Categories</p>
-                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">{{ count($categories) }}</h3>
+                            <p class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-amber-400 transition-colors">Categories</p>
+                            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 group-hover:scale-110 transition-transform">{{ count($categories) }}</h3>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-300">
                             <i class="fa-solid fa-folder text-xl"></i>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-400 font-semibold mt-3">
+                    <p class="text-xs text-slate-400 font-semibold mt-3 group-hover:translate-x-1 transition-transform">
                         Organized folders
                     </p>
                 </div>
@@ -302,30 +338,33 @@
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Recent Notes</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($recentNotes as $recent)
-                            <div class="p-6 rounded-2xl glass-card shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative flex flex-col justify-between h-40">
-                                <div>
+                            <div class="p-6 rounded-2xl glass-card shadow-md hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 relative flex flex-col justify-between h-40 cursor-pointer group overflow-hidden">
+                                <!-- Animated Background on Hover -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-purple-500/0 group-hover:from-indigo-500/5 group-hover:to-purple-500/5 transition-all duration-300 rounded-2xl"></div>
+                                
+                                <div class="relative z-10">
                                     <div class="flex items-start justify-between">
-                                        <span class="px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+                                        <span class="px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
                                             {{ $recent->category }}
                                         </span>
                                         <div class="flex items-center gap-1">
                                             @if ($recent->is_favorite)
-                                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                                <i class="fa-solid fa-star text-amber-400 text-xs group-hover:scale-125 group-hover:rotate-12 transition-all"></i>
                                             @endif
                                             @if ($recent->share_token)
-                                                <i class="fa-solid fa-link text-indigo-400 text-xs" title="Public Share Active"></i>
+                                                <i class="fa-solid fa-link text-indigo-400 text-xs group-hover:scale-125 group-hover:-rotate-12 transition-all" title="Public Share Active"></i>
                                             @endif
                                         </div>
                                     </div>
-                                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-3 truncate">
+                                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-3 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                         <a href="{{ route('notes.show', $recent->id) }}" class="hover:underline">{{ $recent->title }}</a>
                                     </h3>
                                     <p class="text-xs text-slate-400 line-clamp-2 mt-1">{{ strip_tags($recent->content) }}</p>
                                 </div>
-                                <div class="text-[10px] font-medium text-slate-400 flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-3 mt-4">
-                                    <span>Updated {{ $recent->updated_at->diffForHumans() }}</span>
-                                    <a href="{{ route('notes.show', $recent->id) }}" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
-                                        Open <i class="fa-solid fa-arrow-right ml-1"></i>
+                                <div class="text-[10px] font-medium text-slate-400 flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-3 mt-4 relative z-10">
+                                    <span class="group-hover:text-indigo-500 transition-colors">Updated {{ $recent->updated_at->diffForHumans() }}</span>
+                                    <a href="{{ route('notes.show', $recent->id) }}" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline group-hover:translate-x-1 transition-transform inline-flex items-center">
+                                        Open <i class="fa-solid fa-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
                                 </div>
                             </div>
@@ -347,37 +386,40 @@
                     </h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($pinnedNotes as $note)
-                            <div class="p-6 rounded-2xl frosted border-2 border-indigo-200/50 dark:border-indigo-800/50 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative flex flex-col justify-between h-48">
-                                <div>
+                            <div class="p-6 rounded-2xl frosted border-2 border-indigo-200/50 dark:border-indigo-800/50 shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:scale-105 hover:border-indigo-400/70 dark:hover:border-indigo-600/70 transition-all duration-300 relative flex flex-col justify-between h-48 cursor-pointer group overflow-hidden">
+                                <!-- Animated Background on Hover -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-purple-500/0 group-hover:from-indigo-500/10 group-hover:to-purple-500/10 transition-all duration-300 rounded-2xl"></div>
+                                
+                                <div class="relative z-10">
                                     <div class="flex items-start justify-between mb-3">
-                                        <span class="px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+                                        <span class="px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
                                             {{ $note->category }}
                                         </span>
                                         <div class="flex items-center gap-1">
-                                            <i class="fa-solid fa-thumbtack text-indigo-500 text-xs"></i>
+                                            <i class="fa-solid fa-thumbtack text-indigo-500 text-xs group-hover:scale-125 group-hover:rotate-12 transition-all"></i>
                                             @if ($note->is_favorite)
-                                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                                <i class="fa-solid fa-star text-amber-400 text-xs group-hover:scale-125 group-hover:-rotate-12 transition-all"></i>
                                             @endif
                                         </div>
                                     </div>
-                                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white truncate">
+                                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                         <a href="{{ route('notes.show', $note->id) }}" class="hover:underline">{{ $note->title }}</a>
                                     </h3>
                                     <p class="text-xs text-slate-400 line-clamp-2 mt-2">{{ strip_tags($note->content) }}</p>
                                     @if (!empty($note->tags))
                                         <div class="flex flex-wrap gap-1 mt-2">
                                             @foreach (array_slice($note->tags, 0, 3) as $tag)
-                                                <span class="px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+                                                <span class="px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform">
                                                     #{{ $tag }}
                                                 </span>
                                             @endforeach
                                         </div>
                                     @endif
                                 </div>
-                                <div class="text-[10px] font-medium text-slate-400 flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-3 mt-4">
-                                    <span>{{ $note->updated_at->diffForHumans() }}</span>
-                                    <a href="{{ route('notes.show', $note->id) }}" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
-                                        Open <i class="fa-solid fa-arrow-right ml-1"></i>
+                                <div class="text-[10px] font-medium text-slate-400 flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-3 mt-4 relative z-10">
+                                    <span class="group-hover:text-indigo-500 transition-colors">{{ $note->updated_at->diffForHumans() }}</span>
+                                    <a href="{{ route('notes.show', $note->id) }}" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline group-hover:translate-x-1 transition-transform inline-flex items-center">
+                                        Open <i class="fa-solid fa-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
                                 </div>
                             </div>
