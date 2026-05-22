@@ -19,6 +19,17 @@ class Activity extends Model
     ];
 
     /**
+     * Get the attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
+
+    /**
      * Get the user associated with the activity.
      */
     public function user(): BelongsTo

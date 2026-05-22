@@ -379,17 +379,43 @@
                                 <p class="text-sm text-slate-400">No recent activity</p>
                             </div>
                         @else
-                            <div class="relative pl-4 border-l-2 border-slate-200 dark:border-slate-800 space-y-6 max-h-96 overflow-y-auto">
+                            <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
                                 @foreach ($activities as $act)
-                                    <div class="relative group">
-                                        <!-- Bullet indicator -->
-                                        <span class="absolute -left-[25px] top-2 w-4 h-4 rounded-full border-2 bg-white dark:bg-slate-900 border-indigo-500 group-hover:scale-125 transition-transform"></span>
-                                        <div class="p-3 rounded-xl glass-light hover:bg-indigo-500/5 transition-colors">
-                                            <p class="text-sm font-semibold text-slate-900 dark:text-white leading-snug mb-1">{{ $act->description }}</p>
-                                            <span class="text-xs text-slate-400 font-medium flex items-center gap-1">
-                                                <i class="fa-solid fa-clock text-[10px]"></i>
-                                                {{ $act->created_at->diffForHumans() }}
-                                            </span>
+                                    <div class="group">
+                                        <!-- Thread Card -->
+                                        <div class="relative p-4 rounded-xl glass-light hover:bg-indigo-500/5 transition-all border border-slate-200/50 dark:border-slate-800/50 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/10">
+                                            <!-- Thread Line Connector (except for last item) -->
+                                            @if (!$loop->last)
+                                                <div class="absolute left-6 top-full w-0.5 h-3 bg-gradient-to-b from-slate-300 to-transparent dark:from-slate-700"></div>
+                                            @endif
+                                            
+                                            <div class="flex gap-3">
+                                                <!-- Icon Circle -->
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                                    @if(str_contains($act->action, 'login'))
+                                                        <i class="fa-solid fa-right-to-bracket text-white text-sm"></i>
+                                                    @elseif(str_contains($act->action, 'logout'))
+                                                        <i class="fa-solid fa-right-from-bracket text-white text-sm"></i>
+                                                    @elseif(str_contains($act->action, 'register'))
+                                                        <i class="fa-solid fa-user-plus text-white text-sm"></i>
+                                                    @elseif(str_contains($act->action, 'note'))
+                                                        <i class="fa-solid fa-note-sticky text-white text-sm"></i>
+                                                    @elseif(str_contains($act->action, 'profile'))
+                                                        <i class="fa-solid fa-user-gear text-white text-sm"></i>
+                                                    @else
+                                                        <i class="fa-solid fa-bolt text-white text-sm"></i>
+                                                    @endif
+                                                </div>
+                                                
+                                                <!-- Content -->
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-sm font-semibold text-slate-900 dark:text-white leading-snug mb-1">{{ $act->description }}</p>
+                                                    <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                                                        <i class="fa-solid fa-clock text-[10px]"></i>
+                                                        <span>{{ $act->created_at ? $act->created_at->diffForHumans() : 'Recently' }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach

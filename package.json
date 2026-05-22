@@ -5,7 +5,9 @@
     "scripts": {
         "build": "vite build",
         "dev": "concurrently \"vite\" \"node socket-server.js\" --names=\"vite,socket\" -c \"cyan,magenta\"",
-        "socket": "node socket-server.js"
+        "socket": "node socket-server.js",
+        "vercel-build": "npm run build",
+        "deploy": "npm run build && git add . && git commit -m 'Deploy to Vercel' && git push"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

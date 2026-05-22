@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "framework": null,
+  "buildCommand": "bash build.sh",
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.6.0",
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/build/(.*)",
+      "dest": "/public/build/$1"
+    },
+    {
+      "src": "/(css|js|images|fonts)/(.*)$",
+      "dest": "/public/$1/$2"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.ico"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/public/robots.txt"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "VERCEL": "true"
+  }
+}
