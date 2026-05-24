@@ -446,28 +446,43 @@
         let saveTimeout;
         window.triggerAutoSave = (content) => {
             const alpineEl = document.querySelector('[x-data]');
-            if (alpineEl) {
+            if (alpineEl && alpineEl.__x && alpineEl.__x.$data) {
                 alpineEl.__x.$data.saveStatus = 'Saving...';
             }
             
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(() => {
+                console.log('🔄 Auto-saving content...', content.substring(0, 50) + '...');
                 fetch('{{ route('notes.update', $note->id) }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({ content: content, silent: true })
                 })
-                .then(r => r.json())
+                .then(r => {
+                    console.log('📡 Response status:', r.status);
+                    if (!r.ok) {
+                        return r.text().then(text => {
+                            console.error('❌ Save failed:', text);
+                            throw new Error('Save failed: ' + r.status);
+                        });
+                    }
+                    return r.json();
+                })
                 .then(data => {
-                    if (alpineEl) {
+                    console.log('✅ Save successful:', data);
+                    const alpineEl = document.querySelector('[x-data]');
+                    if (alpineEl && alpineEl.__x && alpineEl.__x.$data) {
                         alpineEl.__x.$data.saveStatus = 'Saved';
                     }
                 })
                 .catch(e => {
-                    if (alpineEl) {
+                    console.error('❌ Save error:', e);
+                    const alpineEl = document.querySelector('[x-data]');
+                    if (alpineEl && alpineEl.__x && alpineEl.__x.$data) {
                         alpineEl.__x.$data.saveStatus = 'Offline';
                     }
                 });
